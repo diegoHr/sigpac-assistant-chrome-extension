@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "SIGPAC Assistant Pro",
+  "version": "1.0",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["https://sigpac.mapa.gob.es/*"],
+  "action": {
+    "default_popup": "popup/index.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://sigpac.mapa.gob.es/*"],
+      "js": ["scripts/content.js"],
+      "css": ["styles/floating-ui.css"]
+    }
+  ]
+}

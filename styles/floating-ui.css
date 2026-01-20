@@ -1,0 +1,35 @@
+#sigpac-hud {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 220px;
+}
+
+.hud-btn {
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#btn-red { background-color: #e74c3c; }    /* Descartar */
+#btn-blue { background-color: #3498db; }   /* Navegar */
+#btn-green { background-color: #2ecc71; }  /* Vigente/Editar */
+
+#edit-form {
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 10px;
+    display: none;
+}
