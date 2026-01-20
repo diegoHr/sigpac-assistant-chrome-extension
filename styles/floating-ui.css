@@ -3,14 +3,33 @@
     top: 20px;
     right: 20px;
     z-index: 9999;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 15px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 0; /* Quitamos el padding general para controlar la cabecera */
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    width: 220px;
+    width: 240px;
+    overflow: hidden;
+    user-select: none; /* Evita seleccionar texto al arrastrar */
+}
+
+.hud-header {
+    background: #2c3e50;
+    color: white;
+    padding: 8px;
+    cursor: move; /* Cursor de movimiento */
+    font-size: 10px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.hud-body {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .hud-btn {
@@ -32,4 +51,15 @@
     padding: 10px;
     margin-top: 10px;
     display: none;
+}
+
+.btn-back {
+    background-color: #7f8c8d; /* Gris */
+    margin-top: 15px; /* Separación de los botones principales */
+    border-top: 1px dashed #ccc;
+    padding-top: 15px !important;
+}
+
+.btn-back:hover {
+    background-color: #95a5a6;
 }

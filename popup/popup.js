@@ -28,42 +28,52 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function processData(csvText) {
-        const lines = csvText.split('\n');
-        const headers = lines[0].split(','); // Asumiendo separador por comas
-        const data = [];
+    const lines = csvText.split('\n');
+    const data = [];
 
-        for (let i = 1; i < lines.length; i++) {
-            if (!lines[i].trim()) continue;
-            const cols = lines[i].split(',');
-            
-            // Creamos el objeto de la parcela siguiendo tus requisitos
-            const parcela = {
-                provincia: cols[0],
-                municipio: cols[1],
-                agregado: cols[2],
-                zona: cols[3],
-                poligono: cols[4],
-                parcela: cols[5],
-                recinto: cols[6],
-                superficie: cols[7],
-                cultivo: cols[8],
-                anotaciones: cols[9] || "",
-                descartada: cols[10] === 'true',
-                procesada: cols[11] === 'true'
-            };
-            data.push(parcela);
-        }
+    for (let i = 1; i < lines.length; i++) {
+        if (!lines[i].trim()) continue;
+        const cols = lines[i].split(',');
+        
+        const procesada = cols[11]?.trim().toLowerCase() === 'true'; // Columna 11: Procesada
 
-        // Guardar en el almacenamiento local de Chrome
-        chrome.storage.local.set({ 
-            'parcelas': data, 
-            'currentIndex': 0 
-        }, () => {
-            updateUI(data, 0);
-            downloadBtn.style.display = 'block';
-            alert('CSV cargado y persistido correctamente.');
-        });
+        const parcela = {
+            provincia: cols[0],
+            municipio: cols[1],
+            agregado: cols[2],
+            zona: cols[3],
+            poligono: cols[4],
+            parcela: cols[5],
+            recinto: cols[6],
+            superficie: cols[7],
+            cultivo: cols[8],
+            anotaciones: cols[9] || "",
+            descartada: cols[10]?.trim().toLowerCase() === 'true',
+            procesada: procesada
+        };
+        data.push(parcela);
     }
+
+    // BUSCAR LA PRIMERA PARCELA NO PROCESADA
+    const firstPendingIndex = data.findIndex(p => p.procesada === false);
+    
+    // Si todas están procesadas, empezamos por la última o la cero
+    const startIndex = firstPendingIndex === -1 ? 0 : firstPendingIndex;
+
+    chrome.storage.local.set({ 
+        'parcelas': data, 
+        'currentIndex': startIndex 
+    }, () => {
+        updateUI(data, startIndex);
+        document.getElementById('downloadCsv').style.display = 'block';
+        
+        if (firstPendingIndex === -1 && data.length > 0) {
+            alert('¡Atención! Todas las parcelas de este CSV ya aparecen como procesadas.');
+        } else {
+            alert(`CSV cargado. Reanudando desde la parcela ${startIndex + 1}.`);
+        }
+    });
+}
 
     // 3. Actualizar la UI del Popup
     function updateUI(data, index) {
@@ -73,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         progressEl.innerText = `${procesadas} / ${total}`;
         if (actual) {
-            currentParcelEl.innerText = `Pol: ${actual.poligono} - Par: ${actual.parcela}`;
+            currentParcelEl.innerText = `M:${actual.municipio} - A: ${actual.agregado} - Pol: ${actual.poligono} - Par: ${actual.parcela} - R: ${actual.recinto}`;
         }
     }
 
