@@ -9,7 +9,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://sigpac.mapa.gob.es/*"],
+      "matches": ["https://sigpac.mapa.gob.es/fega/visor/"],
       "js": ["scripts/content.js"],
       "css": ["styles/floating-ui.css"]
     }
